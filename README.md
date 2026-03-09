@@ -1,117 +1,115 @@
-# ETMS – Employee Task Management System
+Employee Task Management System (ETMS)
 
-## Overview
+A full-stack Employee Task Management System built using ASP.NET Core Web API (Clean Architecture) and Angular.
+The system allows managers to assign tasks, track employee attendance, monitor performance, and manage employee workflows efficiently.
 
-ETMS (Employee Task Management System) is a web-based application designed to help organizations manage employee tasks and track progress efficiently.
+Tech Stack
+Backend
 
-The system allows administrators to assign tasks to employees, monitor task status, and manage task completion. Employees can log in, view assigned tasks, update progress, and mark tasks as completed.
+ASP.NET Core Web API
 
-This project is built using **ASP.NET Core Web API** following **Clean Architecture principles** to maintain a scalable and maintainable code structure.
+Clean Architecture
 
----
+Entity Framework Core
 
-## Key Features
+SQL Server
 
-* Employee authentication and login
-* Task assignment by administrators
-* Task status tracking
-* Attendance management
-* RESTful API endpoints for task and employee management
-* Secure password hashing using BCrypt
-* JWT-based authentication
+JWT Authentication
 
----
+Frontend
 
-## Technology Stack
+Angular
 
-### Backend
+TypeScript
 
-* ASP.NET Core Web API
-* C#
-* Entity Framework Core
-* SQL Server
+Bootstrap / CSS
 
-### Security
+Tools
 
-* JWT Authentication
-* BCrypt Password Hashing
+Visual Studio
 
-### Architecture
+VS Code
 
-* Clean Architecture
-* Layered project structure
+Git & GitHub
 
----
-
-## Project Structure
-
-The project follows **Clean Architecture** to separate responsibilities between layers.
-
+Project Structure
 ETMS
 │
-├── ETMS.API
-│   ├── Controllers
-│   ├── Services
-│   ├── Program.cs
-│   └── appsettings.json
+├── ETMS.API             → Web API (Controllers)
+├── ETMS.Application     → Business Logic
+├── ETMS.Domain          → Entities
+├── ETMS.Infrastructure  → Database & Repositories
+│
+├── frontend
+│   └── etms-ui          → Angular Application
+│
+└── README.md
+Features
+Manager
 
-├── ETMS.Application
-│   └── Models
+Assign tasks to employees
 
-├── ETMS.Domain
-│   └── Entities
+Review employee performance
 
-├── ETMS.Infrastructure
-│   └── Data Access
+Monitor attendance
 
-└── ETMS.sln
+Manage leave requests
 
----
+Employee
 
-## System Architecture
+View assigned tasks
 
-Frontend (Angular)
-↓
-ASP.NET Core Web API
-↓
-Entity Framework Core
-↓
-SQL Server Database
+Update task progress
 
----
+Submit leave requests
 
-## Installation & Setup
+Mark attendance
 
-### Clone the repository
+How to Run the Project
+Backend (.NET API)
 
-git clone https://github.com/YOUR_USERNAME/ETMS-Employee-Task-Management-System.git
+Open the solution in Visual Studio
 
-### Open the solution
-
-Open **ETMS.sln** in Visual Studio.
-
-### Configure database
-
-Update the connection string inside:
+Update connection string in:
 
 appsettings.json
 
-### Run the project
+Run migrations if required:
 
-Press **F5** or run the API using Visual Studio.
+Update-Database
 
----
+Run the API
 
-## Future Enhancements
+https://localhost:xxxx
+Frontend (Angular)
 
-* Role-based access control
-* Task notifications
-* Dashboard analytics
-* Email alerts for task updates
-* Mobile responsive UI improvements
+Navigate to the frontend folder:
 
----
+cd frontend/etms-ui
 
-## Author
+Install dependencies:
+
+npm install
+
+Run the Angular application:
+
+ng serve
+
+Open in browser:
+
+http://localhost:4200
+Future Enhancements
+
+Role-based access control
+
+Notifications
+
+Dashboard analytics
+
+Docker deployment
+
+Author
 
 Sonaly Ganapathy
+Full Stack Developer
+Tech Stack: ASP.NET Core | Angular | SQL Server
