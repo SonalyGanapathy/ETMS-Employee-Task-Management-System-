@@ -1,0 +1,15 @@
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\bin\Debug\net10.0\ETMS.Application.deps.json
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\bin\Debug\net10.0\ETMS.Application.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\bin\Debug\net10.0\ETMS.Application.pdb
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\bin\Debug\net10.0\ETMS.Domain.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\bin\Debug\net10.0\ETMS.Domain.pdb
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.csproj.AssemblyReference.cache
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.AssemblyInfoInputs.cache
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.AssemblyInfo.cs
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.csproj.CoreCompileInputs.cache
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.App.EBC1F648.Up2Date
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\refint\ETMS.Application.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ETMS.Application.pdb
+C:\Users\iamso\source\repos\ETMS\ETMS.Application\obj\Debug\net10.0\ref\ETMS.Application.dll
