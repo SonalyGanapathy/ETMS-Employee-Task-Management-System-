@@ -1,0 +1,11 @@
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\bin\Debug\net10.0\ETMS.Domain.deps.json
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\bin\Debug\net10.0\ETMS.Domain.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\bin\Debug\net10.0\ETMS.Domain.pdb
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.AssemblyInfoInputs.cache
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.AssemblyInfo.cs
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.csproj.CoreCompileInputs.cache
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\refint\ETMS.Domain.dll
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ETMS.Domain.pdb
+C:\Users\iamso\source\repos\ETMS\ETMS.Domain\obj\Debug\net10.0\ref\ETMS.Domain.dll

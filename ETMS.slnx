@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ETMS.API/ETMS.API.csproj" Id="7c83542d-18b3-42cc-8fde-dd7633331c27" />
+  <Project Path="ETMS.Application/ETMS.Application.csproj" />
+  <Project Path="ETMS.Domain/ETMS.Domain.csproj" />
+  <Project Path="ETMS.Infrastructure/ETMS.Infrastructure.csproj" />
+</Solution>
