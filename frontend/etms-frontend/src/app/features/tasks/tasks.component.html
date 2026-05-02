@@ -1,0 +1,194 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Tasks</h1>
+    <p class="page-subtitle">Manage and track task assignments across your team.</p>
+  </div>
+  <button *ngIf="auth.isManager" class="btn btn-primary" (click)="openCreate()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Assign Task
+  </button>
+</div>
+
+<!-- Filters -->
+<div class="filter-bar">
+  <div class="search-wrapper" style="flex:1;max-width:320px">
+    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" class="form-control" placeholder="Search tasks..."
+           [value]="searchTerm()" (input)="searchTerm.set($any($event.target).value)" />
+  </div>
+
+  <select class="form-control" style="width:160px"
+          [value]="statusFilter()" (change)="statusFilter.set(+$any($event.target).value)">
+    <option value="-1">All Status</option>
+    <option value="0">Pending</option>
+    <option value="1">In Progress</option>
+    <option value="2">Submitted</option>
+    <option value="3">Reviewed</option>
+  </select>
+
+  <span class="result-count">{{ filtered().length }} tasks</span>
+</div>
+
+<!-- Table -->
+<div class="card">
+  <div *ngIf="loading()" class="loading-rows">
+    <div class="skeleton" style="height:52px;margin:6px 0;" *ngFor="let i of [1,2,3,4,5]"></div>
+  </div>
+
+  <div *ngIf="!loading() && filtered().length === 0" class="empty-state">
+    <div class="empty-icon">✦</div>
+    <h4>No tasks found</h4>
+    <p>Try adjusting your filters or assign a new task.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading() && filtered().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Assigned To</th>
+          <th>Assigned By</th>
+          <th>Status</th>
+          <th>Time</th>
+          <th>Score</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of filtered()">
+          <td>
+            <div class="task-cell">
+              <span class="fw-600 text-dark">{{ task.taskName }}</span>
+              <span class="text-muted text-sm" *ngIf="task.comment">{{ task.comment }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-center gap-8">
+              <div class="avatar avatar-sm {{ avatarColor(task.assignedToUserName) }}">
+                {{ initials(task.assignedToUserName) }}
+              </div>
+              <span>{{ task.assignedToUserName }}</span>
+            </div>
+          </td>
+          <td class="text-muted">{{ task.assignedByUserName }}</td>
+          <td>
+            <span class="badge {{ taskStatus[task.status]?.class }}">
+              {{ taskStatus[task.status]?.label }}
+            </span>
+          </td>
+          <td class="text-muted">{{ task.timeTaken }}h</td>
+          <td>
+            <div class="stars" *ngIf="task.reviewMarks; else noScore">
+              <span *ngFor="let filled of starArray(task.reviewMarks!)"
+                    class="star" [class.filled]="filled">★</span>
+              <span class="score-num">{{ task.reviewMarks }}/5</span>
+            </div>
+            <ng-template #noScore><span class="text-muted text-sm">—</span></ng-template>
+          </td>
+          <td>
+            <div class="action-btns">
+              <button *ngIf="canEdit(task)" class="btn btn-ghost btn-sm btn-icon" title="Edit" (click)="openEdit(task)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <button *ngIf="canReview(task)" class="btn btn-primary btn-sm" (click)="openReview(task)">
+                Review
+              </button>
+              <span *ngIf="task.reviewMarks && task.reviewComment" class="reviewed-chip">✓ Reviewed</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal-backdrop" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ editingTask() ? 'Edit Task' : 'Assign New Task' }}</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" (click)="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Task Name *</label>
+        <input type="text" class="form-control" placeholder="Enter task name..."
+               [(ngModel)]="form.taskName" />
+      </div>
+
+      <div class="form-group" *ngIf="auth.isManager">
+        <label class="form-label">Assign To *</label>
+        <select class="form-control" [(ngModel)]="form.assignedToUserId">
+          <option value="">Select employee...</option>
+          <option *ngFor="let u of users()" [value]="u.id">{{ u.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" [(ngModel)]="form.status">
+          <option *ngFor="let s of statusOptions" [value]="s">{{ taskStatus[s]?.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Comment</label>
+        <textarea class="form-control" rows="3" placeholder="Optional comment..."
+                  [(ngModel)]="form.comment"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Time Taken (hours)</label>
+        <input type="number" class="form-control" min="0" step="0.5"
+               [(ngModel)]="form.timeTaken" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="saving()">
+        <span class="spinner" *ngIf="saving()"></span>
+        <span *ngIf="!saving()">{{ editingTask() ? 'Update Task' : 'Assign Task' }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal-backdrop" *ngIf="showReviewModal()" (click)="closeReviewModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Review Task</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" (click)="closeReviewModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Score (1–5)</label>
+        <div class="star-picker">
+          <button *ngFor="let n of markOptions" type="button"
+                  class="star-btn" [class.active]="reviewForm.reviewMarks >= n"
+                  (click)="reviewForm.reviewMarks = n">★</button>
+          <span class="star-label">{{ reviewForm.reviewMarks }}/5</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Review Comment</label>
+        <textarea class="form-control" rows="4" placeholder="Write your review..."
+                  [(ngModel)]="reviewForm.reviewComment"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeReviewModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="submitReview()" [disabled]="saving()">
+        <span class="spinner" *ngIf="saving()"></span>
+        <span *ngIf="!saving()">Submit Review</span>
+      </button>
+    </div>
+  </div>
+</div>

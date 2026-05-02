@@ -48,7 +48,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:4200")
+                .WithOrigins(
+                    "http://localhost:4200",  // Angular
+                    "http://localhost:3000"   // React
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -67,11 +70,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
-
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ETMSDbContext>();
     db.Database.Migrate();
     DbSeeder.Seed(db);
 }
+
+app.Run();
+
+

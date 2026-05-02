@@ -42,7 +42,8 @@ namespace ETMS.API.Controllers
                 AssignedByUserId = userId,
                 Status = dto.Status,
                 TimeTaken = dto.TimeTaken,
-                CreatedDate = DateTime.UtcNow
+                ReviewComment = "",   // default empty string
+                CreatedDate = DateTime.Now
             };
 
             _context.TaskAssignments.Add(task);

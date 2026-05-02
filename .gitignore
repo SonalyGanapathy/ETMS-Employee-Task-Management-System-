@@ -1,0 +1,23 @@
+# Build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.log
+
+# IDE
+.vs/
+
+# Node
+node_modules/
+frontend/etms-frontend/node_modules/
+frontend/etms-react/node_modules/
+
+# React build output
+frontend/etms-react/build/
+
+# Angular build output
+frontend/etms-frontend/dist/
+
+# Environment
+*.env.local

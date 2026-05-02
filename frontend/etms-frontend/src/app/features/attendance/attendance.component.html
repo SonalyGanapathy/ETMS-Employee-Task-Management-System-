@@ -1,0 +1,80 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Attendance</h1>
+    <p class="page-subtitle">{{ today }}</p>
+  </div>
+</div>
+
+<!-- Mark Today's Attendance Card -->
+<div class="attendance-card card">
+  <div class="card-header">
+    <h3 class="card-title">Mark Today's Attendance</h3>
+    <span class="today-chip">Today</span>
+  </div>
+  <div class="card-body">
+    <p class="mark-hint">Select your attendance status for today:</p>
+
+    <div class="status-selector">
+      <button *ngFor="let s of statuses" class="status-option" [class.selected]="selectedStatus() === s.id"
+        (click)="selectedStatus.set(s.id)" [style.--accent]="s.color">
+        <span class="status-icon">{{ s.icon }}</span>
+        <span class="status-label-text">{{ s.label }}</span>
+      </button>
+    </div>
+
+    <button class="btn btn-primary mark-btn" (click)="markAttendance()" [disabled]="marking()">
+      <span class="spinner" *ngIf="marking()"></span>
+      <span *ngIf="!marking()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        Mark Attendance
+      </span>
+    </button>
+
+    <div class="success-banner" *ngIf="todayRecord()">
+      ✓ Attendance marked as <strong>{{ statuses[todayRecord().statusId - 1]?.label }}</strong>
+      at {{ todayRecord().checkInTime | date:'shortTime' }}
+    </div>
+  </div>
+</div>
+
+<!-- History -->
+<div class="card" style="margin-top:24px">
+  <div class="card-header">
+    <h3 class="card-title">Attendance History</h3>
+  </div>
+
+  <div *ngIf="loading()" style="padding:16px;display:flex;flex-direction:column;gap:6px">
+    <div class="skeleton" style="height:52px" *ngFor="let i of [1,2,3,4]"></div>
+  </div>
+
+  <div *ngIf="!loading() && records().length === 0" class="empty-state">
+    <div class="empty-icon">◷</div>
+    <h4>No attendance records</h4>
+    <p>Your attendance history will appear here.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading() && records().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Check-In Time</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of records()">
+          <td class="fw-600">{{ r.date | date:'mediumDate' }}</td>
+          <td>
+            <span class="badge {{ statusBadge(r.status) }}">{{ r.status }}</span>
+          </td>
+          <td>{{ r.checkInTime | date:'shortTime' }}</td>
+          <td>{{ r.remarks || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,231 @@
+<!-- Page header -->
+<div class="page-header">
+  <div>
+    <p class="greeting-label">{{ greeting }},</p>
+    <h1 class="page-title">{{ firstName | titlecase }} 👋</h1>
+    <p class="page-subtitle">Here's what's happening across your team today.</p>
+  </div>
+  <div class="header-actions">
+    <a routerLink="/tasks" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      New Task
+    </a>
+  </div>
+</div>
+
+<!-- Manager stats -->
+<div class="stats-grid" *ngIf="auth.isManager">
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--blue">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-value">{{ stats().activeEmployees }}</span>
+      <span class="stat-label">Active Employees</span>
+    </div>
+    <div class="stat-trend trend-up">+2 this month</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--green">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-value">{{ stats().presentEmployees }}</span>
+      <span class="stat-label">Present Today</span>
+    </div>
+    <div class="stat-trend trend-up">On-time attendance</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--amber">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-value">{{ stats().pendingLeaveRequests }}</span>
+      <span class="stat-label">Pending Leaves</span>
+    </div>
+    <div class="stat-trend trend-neutral">Needs approval</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--red">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-value">{{ stats().employeesOnLeave }}</span>
+      <span class="stat-label">On Leave Today</span>
+    </div>
+    <div class="stat-trend trend-neutral">Approved leaves</div>
+  </div>
+</div>
+
+<!-- Task overview -->
+<div class="dashboard-grid">
+
+  <!-- Task status breakdown -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Task Overview</h3>
+      <a routerLink="/tasks" class="btn btn-ghost btn-sm">View All →</a>
+    </div>
+    <div class="card-body">
+
+      <div class="task-totals">
+        <div class="total-number">{{ taskCounts().total }}</div>
+        <div class="total-label">Total Tasks</div>
+      </div>
+
+      <div class="status-bars">
+        <div class="status-bar-item">
+          <div class="status-bar-header">
+            <span class="status-dot dot-warning"></span>
+            <span>Pending</span>
+            <span class="status-count">{{ taskCounts().pending }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-warning" [style.width.%]="statusPercent(taskCounts().pending)"></div>
+          </div>
+        </div>
+
+        <div class="status-bar-item">
+          <div class="status-bar-header">
+            <span class="status-dot dot-info"></span>
+            <span>In Progress</span>
+            <span class="status-count">{{ taskCounts().inProgress }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-info" [style.width.%]="statusPercent(taskCounts().inProgress)"></div>
+          </div>
+        </div>
+
+        <div class="status-bar-item">
+          <div class="status-bar-header">
+            <span class="status-dot dot-brand"></span>
+            <span>Submitted</span>
+            <span class="status-count">{{ taskCounts().submitted }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-brand" [style.width.%]="statusPercent(taskCounts().submitted)"></div>
+          </div>
+        </div>
+
+        <div class="status-bar-item">
+          <div class="status-bar-header">
+            <span class="status-dot dot-success"></span>
+            <span>Reviewed</span>
+            <span class="status-count">{{ taskCounts().reviewed }}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-success" [style.width.%]="statusPercent(taskCounts().reviewed)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Quick Actions</h3>
+    </div>
+    <div class="card-body quick-actions">
+      <a routerLink="/attendance" class="action-tile action-tile--teal">
+        <div class="action-icon">◷</div>
+        <div class="action-label">Mark Attendance</div>
+        <div class="action-sub">Log today's presence</div>
+      </a>
+      <a routerLink="/leave" class="action-tile action-tile--amber">
+        <div class="action-icon">◈</div>
+        <div class="action-label">Apply Leave</div>
+        <div class="action-sub">Submit a leave request</div>
+      </a>
+      <a routerLink="/tasks" class="action-tile action-tile--blue">
+        <div class="action-icon">✦</div>
+        <div class="action-label">My Tasks</div>
+        <div class="action-sub">View assigned tasks</div>
+      </a>
+      <a routerLink="/performance" class="action-tile action-tile--violet">
+        <div class="action-icon">◆</div>
+        <div class="action-label">Performance</div>
+        <div class="action-sub">View your scores</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Recent tasks table -->
+<div class="card mt-24">
+  <div class="card-header">
+    <h3 class="card-title">Recent Tasks</h3>
+    <a routerLink="/tasks" class="btn btn-ghost btn-sm">View all tasks →</a>
+  </div>
+
+  <div *ngIf="loading()" class="loading-rows">
+    <div class="skeleton" style="height:48px;margin:8px 24px;" *ngFor="let i of [1,2,3,4]"></div>
+  </div>
+
+  <div *ngIf="!loading() && recentTasks().length === 0" class="empty-state">
+    <div class="empty-icon">✦</div>
+    <h4>No tasks yet</h4>
+    <p>Tasks assigned to you will appear here.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading() && recentTasks().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Task Name</th>
+          <th>Assigned To</th>
+          <th>Assigned By</th>
+          <th>Status</th>
+          <th>Time (hrs)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of recentTasks()">
+          <td>
+            <div class="task-name-cell">
+              <span class="task-dot" [style.background]="task.status === 0 ? 'var(--warning)' : task.status === 1 ? 'var(--info)' : task.status === 2 ? 'var(--brand-500)' : 'var(--success)'"></span>
+              {{ task.taskName }}
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-center gap-8">
+              <div class="avatar avatar-sm {{ avatarColor(task.assignedToUserName) }}">
+                {{ initials(task.assignedToUserName) }}
+              </div>
+              {{ task.assignedToUserName }}
+            </div>
+          </td>
+          <td class="text-muted">{{ task.assignedByUserName }}</td>
+          <td>
+            <span class="badge {{ taskStatus[task.status]?.class }}">
+              {{ taskStatus[task.status]?.label }}
+            </span>
+          </td>
+          <td class="text-muted">{{ task.timeTaken }}h</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

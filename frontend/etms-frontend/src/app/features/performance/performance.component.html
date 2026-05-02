@@ -1,0 +1,108 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Performance</h1>
+    <p class="page-subtitle">Track and publish employee performance reviews.</p>
+  </div>
+</div>
+
+<!-- Manager: Publish Panel -->
+<div class="card publish-card" *ngIf="auth.isManager">
+  <div class="card-header">
+    <h3 class="card-title">Publish Performance Review</h3>
+  </div>
+  <div class="card-body">
+    <div class="publish-grid">
+      <div class="form-group">
+        <label class="form-label">Employee *</label>
+        <select class="form-control" [(ngModel)]="publishForm.employeeUserId">
+          <option value="">Select employee...</option>
+          <option *ngFor="let u of users()" [value]="u.id">{{ u.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Year</label>
+        <select class="form-control" [(ngModel)]="publishForm.year">
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Month (optional)</label>
+        <select class="form-control" [(ngModel)]="publishForm.month">
+          <option [value]="null">All year</option>
+          <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">Month {{ m }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Manager Comment</label>
+      <textarea class="form-control" rows="3" placeholder="Add a comment for the employee..."
+                [(ngModel)]="publishForm.managerComment"></textarea>
+    </div>
+
+    <div class="preview-box" *ngIf="preview()">
+      <div class="preview-stat">
+        <span class="preview-num" [style.color]="scoreColor(preview()!.averageScore)">
+          {{ preview()!.averageScore | number:'1.1-1' }}
+        </span>
+        <span class="preview-label">Average Score (out of 5)</span>
+      </div>
+      <div class="preview-stat">
+        <span class="preview-num">{{ preview()!.taskCount }}</span>
+        <span class="preview-label">Reviewed Tasks</span>
+      </div>
+      <div class="stars-preview">
+        <span *ngFor="let f of starArray(preview()!.averageScore)" class="star" [class.filled]="f">★</span>
+      </div>
+    </div>
+
+    <div class="publish-actions">
+      <button class="btn btn-secondary" (click)="previewPerformance()">Preview</button>
+      <button class="btn btn-primary" (click)="publish()" [disabled]="publishing() || !preview()">
+        <span class="spinner" *ngIf="publishing()"></span>
+        <span *ngIf="!publishing()">Publish Review</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- My Performance Summaries -->
+<div class="card" [style.margin-top]="auth.isManager ? '24px' : '0'">
+  <div class="card-header">
+    <h3 class="card-title">My Performance History</h3>
+  </div>
+
+  <div *ngIf="loading()" style="padding:16px;display:flex;flex-direction:column;gap:6px">
+    <div class="skeleton" style="height:80px" *ngFor="let i of [1,2]"></div>
+  </div>
+
+  <div *ngIf="!loading() && summaries().length === 0" class="empty-state">
+    <div class="empty-icon">◆</div>
+    <h4>No performance reviews yet</h4>
+    <p>Your published performance reviews will appear here.</p>
+  </div>
+
+  <div class="performance-list" *ngIf="!loading() && summaries().length > 0">
+    <div class="perf-item" *ngFor="let s of summaries()">
+      <div class="perf-left">
+        <div class="score-ring" [style.--score-color]="scoreColor(s.averageScore)">
+          <span class="score-value">{{ s.averageScore | number:'1.1-1' }}</span>
+          <span class="score-max">/5</span>
+        </div>
+      </div>
+      <div class="perf-body">
+        <div class="perf-period">
+          {{ s.year }}
+          <span *ngIf="s.month">· Month {{ s.month }}</span>
+          <span *ngIf="s.week">· Week {{ s.week }}</span>
+        </div>
+        <div class="perf-stars">
+          <span *ngFor="let f of starArray(s.averageScore)" class="star" [class.filled]="f">★</span>
+        </div>
+        <div class="perf-comment" *ngIf="s.managerComment">{{ s.managerComment }}</div>
+      </div>
+      <div class="perf-right">
+        <span class="perf-date text-muted text-sm">{{ s.createdAt | date:'mediumDate' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+// leave.component.scss
+.page-title { font-size: 28px; font-weight: 800; }
+.action-btns { display: flex; gap: 6px; }
+.days-chip { background: var(--slate-100); color: var(--slate-700); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-full); }
+.reason-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+textarea.form-control { resize: vertical; }
+.duration-preview {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: var(--brand-100); border-radius: var(--radius-md);
+  font-size: 14px; color: var(--brand-800);
+  strong { font-size: 15px; }
+}

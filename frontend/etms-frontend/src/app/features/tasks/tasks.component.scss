@@ -1,0 +1,30 @@
+.result-count { font-size: 13px; color: var(--slate-500); font-weight: 500; }
+.task-cell { display: flex; flex-direction: column; gap: 2px; }
+.text-dark { color: var(--slate-900); }
+.action-btns { display: flex; gap: 6px; align-items: center; }
+
+.stars { display: flex; align-items: center; gap: 2px; }
+.star { color: var(--slate-200); font-size: 14px; &.filled { color: var(--warning); } }
+.score-num { font-size: 12px; color: var(--slate-500); margin-left: 4px; font-weight: 600; }
+
+.reviewed-chip {
+  font-size: 11px; font-weight: 600; color: #065f46;
+  background: var(--success-bg); padding: 2px 8px; border-radius: var(--radius-full);
+}
+
+textarea.form-control { resize: vertical; }
+
+/* Star picker in review modal */
+.star-picker {
+  display: flex; align-items: center; gap: 8px; margin-top: 4px;
+}
+.star-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 28px; color: var(--slate-200); padding: 0;
+  transition: color var(--duration) var(--ease), transform var(--duration) var(--ease);
+  &.active { color: var(--warning); }
+  &:hover  { transform: scale(1.15); color: var(--warning); }
+}
+.star-label { font-size: 14px; font-weight: 700; color: var(--slate-700); margin-left: 8px; }
+
+.loading-rows { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
